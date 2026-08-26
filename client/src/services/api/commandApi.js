@@ -8,7 +8,7 @@ export async function executeCommand(
   command
 ) {
   return await post(
-    "/api/command",
+    "/command",
     {
       command,
     }
@@ -23,7 +23,7 @@ export async function askCopilot(
   message
 ) {
   return await post(
-    "/api/command/chat",
+    "/command/chat",
     {
       message,
     }
@@ -38,7 +38,7 @@ export async function executeVoiceCommand(
   transcript
 ) {
   return await post(
-    "/api/command/voice",
+    "/command/voice",
     {
       transcript,
     }

@@ -10,7 +10,7 @@ import {
 // =============================================
 
 export async function getProducts() {
-  return await get("/api/products");
+  return await get("/products");
 }
 
 // =============================================
@@ -19,7 +19,7 @@ export async function getProducts() {
 
 export async function createProduct(product) {
   return await post(
-    "/api/products",
+    "/products",
     product
   );
 }
@@ -33,7 +33,7 @@ export async function updateProduct(
   product
 ) {
   return await put(
-    `/api/products/${id}`,
+    `/products/${id}`,
     product
   );
 }
@@ -47,7 +47,7 @@ export async function updateProductStock(
   stock
 ) {
   return await put(
-    `/api/products/${id}/stock`,
+    `/products/${id}/stock`,
     {
       stock,
     }
@@ -63,7 +63,7 @@ export async function receiveStock(
   quantity
 ) {
   return await put(
-    `/api/products/${id}/receive`,
+    `/products/${id}/receive`,
     {
       quantity,
     }
@@ -78,7 +78,7 @@ export async function deleteProduct(
   id
 ) {
   return await remove(
-    `/api/products/${id}`
+    `/products/${id}`
   );
 }
 
@@ -90,7 +90,7 @@ export async function importProducts(
   formData
 ) {
   return await post(
-    "/api/products/import",
+    "/products/import",
     formData,
     true
   );

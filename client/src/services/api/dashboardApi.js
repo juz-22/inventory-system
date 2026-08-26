@@ -5,5 +5,5 @@ import { get } from "./apiClient";
 // ----------------------------------
 
 export async function getDashboard() {
-  return await get("/api/dashboard");
+  return await get("/dashboard");
 }

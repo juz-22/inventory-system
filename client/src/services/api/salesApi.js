@@ -8,7 +8,7 @@ import {
 // ----------------------------------
 
 export async function getSales() {
-  return await get("/api/sales");
+  return await get("/sales");
 }
 
 // ----------------------------------
@@ -19,7 +19,7 @@ export async function createSale(
   sale
 ) {
   return await post(
-    "/api/sales",
+    "/sales",
     sale
   );
 }

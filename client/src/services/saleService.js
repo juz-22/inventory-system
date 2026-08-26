@@ -2,7 +2,8 @@
 // InventorySys - Sales Service
 // =====================================================
 
-const API_URL = "http://localhost:5000/api/sales";
+const API_URL =
+  `${import.meta.env.VITE_API_URL}/sales`;
 
 // =====================================================
 // Get All Sales

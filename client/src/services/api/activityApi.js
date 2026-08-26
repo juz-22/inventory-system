@@ -5,7 +5,5 @@ import { get } from "./apiClient";
 // ----------------------------------
 
 export async function getActivity() {
-  return await get(
-    "/api/activity"
-  );
+  return await get("/activity");
 }
