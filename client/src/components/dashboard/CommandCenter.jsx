@@ -4,6 +4,9 @@ import {
   FaTerminal,
   FaRobot,
   FaUser,
+  FaDownload,
+  FaStop,
+  FaTrash,
 } from "react-icons/fa";
 
 import CommandResponse from "../copilot/CommandResponse";
@@ -24,9 +27,25 @@ function CommandCenter() {
     startVoiceRecognition,
 
     getSuggestions,
+    clearConversation,
+    stopSpeaking,
+    exportConversation,
   } = useBusinessCopilot();
 
   const suggestions = getSuggestions(command);
+
+  const downloadConversation = () => {
+    const blob = new Blob([exportConversation()], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "inventorysys-conversation.json";
+    link.click();
+    URL.revokeObjectURL(url);
+  };
 
   const quickCommands = [
     "dashboard",
@@ -40,7 +59,10 @@ function CommandCenter() {
   ];
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-6">
+    <div
+      id="business-copilot"
+      className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-6"
+    >
 
       {/* ===============================
           Header
@@ -83,6 +105,36 @@ function CommandCenter() {
             Online
           </span>
 
+        </div>
+
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+          <p className="text-xs text-slate-500">
+            Ask about sales, stock, revenue, or business health.
+          </p>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={stopSpeaking}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 transition"
+            >
+              <FaStop /> Stop voice
+            </button>
+            <button
+              type="button"
+              onClick={downloadConversation}
+              disabled={messages.length === 0}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-xs text-slate-300 transition"
+            >
+              <FaDownload /> Export
+            </button>
+            <button
+              type="button"
+              onClick={clearConversation}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800 hover:bg-red-500/20 text-xs text-slate-300 hover:text-red-300 transition"
+            >
+              <FaTrash /> Clear
+            </button>
+          </div>
         </div>
 
       </div>
@@ -251,6 +303,19 @@ function CommandCenter() {
                     : "bg-slate-800 text-slate-100"
                 }`}
               >
+
+                <p className={`text-[10px] mb-1 ${
+                  message.sender === "user"
+                    ? "text-black/60"
+                    : "text-slate-500"
+                }`}>
+                  {message.sender === "user" ? "You" : "Copilot"}
+                  {" · "}
+                  {new Date(message.createdAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
 
                 {message.title && (
 

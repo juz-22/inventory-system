@@ -14,10 +14,12 @@ import {
   getProducts,
   createSale,
 } from "../services/api";
+import { useCurrency } from "../context/CurrencyContext";
 
 function Sales() {
 
   const navigate = useNavigate();
+  const { formatCurrency } = useCurrency();
 
   //--------------------------------------------------
   // State
@@ -717,7 +719,7 @@ function Sales() {
 
                         <p className="text-xs sm:text-sm text-slate-400">
 
-                          ${Number(item.price).toFixed(2)}
+                          {formatCurrency(item.price)}
 
                         </p>
 
@@ -781,12 +783,7 @@ function Sales() {
 
                       <div className="font-bold text-cyan-400 text-sm sm:text-base flex-shrink-0">
 
-                        $
-
-                        {(
-                          item.price *
-                          item.quantity
-                        ).toFixed(2)}
+                        {formatCurrency(item.price * item.quantity)}
 
                       </div>
 
@@ -851,7 +848,7 @@ function Sales() {
                   </span>
 
                   <span>
-                    ${subtotal.toFixed(2)}
+                    {formatCurrency(subtotal)}
                   </span>
 
                 </div>
@@ -863,7 +860,7 @@ function Sales() {
                   </span>
 
                   <span>
-                    ${tax.toFixed(2)}
+                    {formatCurrency(tax)}
                   </span>
 
                 </div>
@@ -876,7 +873,7 @@ function Sales() {
 
                   <span className="text-cyan-400">
 
-                    ${total.toFixed(2)}
+                    {formatCurrency(total)}
 
                   </span>
 
@@ -906,7 +903,7 @@ function Sales() {
 
                 {loading
                   ? "Processing Sale..."
-                  : `Complete Sale ($${total.toFixed(2)})`}
+                  : `Complete Sale (${formatCurrency(total)})`}
 
               </button>
 

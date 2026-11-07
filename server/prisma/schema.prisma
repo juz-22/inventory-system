@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "windows"]
 }
 
 datasource db {
@@ -40,4 +41,10 @@ model Sale {
   paymentMethod String
   receiptNumber String   @unique
   createdAt     DateTime @default(now())
+}
+
+model AdminSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
 }

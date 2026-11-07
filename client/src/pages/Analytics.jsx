@@ -15,8 +15,10 @@ import {
 } from "react-icons/fa6";
 
 import { getAnalytics } from "../services/api/analyticsApi";
+import { useCurrency } from "../context/CurrencyContext";
 
 function Analytics() {
+  const { formatCurrency } = useCurrency();
   const [analytics, setAnalytics] =
     useState(null);
 
@@ -64,12 +66,7 @@ function Analytics() {
   // ==========================================
 
   const formatMoney = (value) => {
-    return `$${Number(
-      value || 0
-    ).toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
+    return formatCurrency(value);
   };
 
   const formatNumber = (value) => {

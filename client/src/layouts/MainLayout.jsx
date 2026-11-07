@@ -3,13 +3,15 @@ import { Outlet } from "react-router-dom";
 
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import { CurrencyProvider } from "../context/CurrencyContext";
 
 function MainLayout() {
   const [sidebarOpen, setSidebarOpen] =
     useState(false);
 
   return (
-    <div className="h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
+    <CurrencyProvider>
+      <div className="h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
 
       {/* ====================================== */}
       {/* Layout */}
@@ -54,7 +56,8 @@ function MainLayout() {
 
       </div>
 
-    </div>
+      </div>
+    </CurrencyProvider>
   );
 }
 

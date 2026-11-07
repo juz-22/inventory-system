@@ -12,16 +12,16 @@ import {
 import {
   FaDollarSign,
 } from "react-icons/fa";
+import { useCurrency } from "../../context/CurrencyContext";
 
 function DashboardStats({ dashboardData }) {
   const navigate = useNavigate();
+  const { formatCurrency } = useCurrency();
 
   const stats = [
     {
       title: "Today's Revenue",
-      value: `$${(
-        dashboardData?.todayRevenue ?? 0
-      ).toFixed(2)}`,
+      value: formatCurrency(dashboardData?.todayRevenue ?? 0),
       icon: <FaDollarSign size={28} />,
       color: "bg-green-500/20 text-green-400",
       hover: "hover:border-green-400",
@@ -42,9 +42,7 @@ function DashboardStats({ dashboardData }) {
 
     {
       title: "Inventory Value",
-      value: `$${(
-        dashboardData?.inventoryValue ?? 0
-      ).toFixed(2)}`,
+      value: formatCurrency(dashboardData?.inventoryValue ?? 0),
       icon: <FaChartLine size={28} />,
       color: "bg-blue-500/20 text-blue-400",
       hover: "hover:border-blue-400",
@@ -81,9 +79,7 @@ function DashboardStats({ dashboardData }) {
 
     {
       title: "Average Sale",
-      value: `$${(
-        dashboardData?.averageSale ?? 0
-      ).toFixed(2)}`,
+      value: formatCurrency(dashboardData?.averageSale ?? 0),
       icon: <FaDollarSign size={28} />,
       color: "bg-purple-500/20 text-purple-400",
       hover: "hover:border-purple-400",

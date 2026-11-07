@@ -1,10 +1,13 @@
 import {
   FaBars,
 } from "react-icons/fa6";
+import { useCurrency } from "../context/CurrencyContext";
 
 function Navbar({
   onMenuClick,
 }) {
+  const { currency, currencies, changeCurrency } = useCurrency();
+
   return (
     <header className="h-16 flex-shrink-0 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-4 sm:px-6">
 
@@ -35,6 +38,23 @@ function Navbar({
       {/* ====================================== */}
 
       <div className="flex items-center gap-3 sm:gap-4">
+
+        <label className="sr-only" htmlFor="currency-select">
+          Display currency
+        </label>
+        <select
+          id="currency-select"
+          value={currency}
+          onChange={(event) => changeCurrency(event.target.value)}
+          className="bg-slate-800 border border-slate-700 px-2 py-2 rounded-lg outline-none focus:border-cyan-500 text-sm"
+          title={`Currency: ${currencies[currency].label}`}
+        >
+          {Object.entries(currencies).map(([code, details]) => (
+            <option key={code} value={code}>
+              {code}
+            </option>
+          ))}
+        </select>
 
         {/* Search */}
 

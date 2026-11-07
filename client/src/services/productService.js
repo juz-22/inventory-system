@@ -68,10 +68,12 @@ export const updateProductStock =
   ) => {
 
     const response =
-      await axios.patch(
+      await axios.put(
         `${API}/${id}/stock`,
         {
-          stock,
+          stock: typeof stock === "object"
+            ? stock.stock
+            : stock,
         }
       );
 

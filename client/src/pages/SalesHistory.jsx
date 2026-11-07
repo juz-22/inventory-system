@@ -13,8 +13,10 @@ import { Link } from "react-router-dom";
 import {
   getSales,
 } from "../services/saleService";
+import { useCurrency } from "../context/CurrencyContext";
 
 function SalesHistory() {
+  const { formatCurrency } = useCurrency();
 
   //--------------------------------------------------
   // State
@@ -34,6 +36,31 @@ function SalesHistory() {
   const [dateFilter,
     setDateFilter] =
     useState("All Time");
+
+  const availableMonths = useMemo(() => {
+    const months = new Set(
+      sales.map((sale) => {
+        const date = new Date(sale.createdAt);
+        return `${date.getFullYear()}-${String(
+          date.getMonth() + 1
+        ).padStart(2, "0")}`;
+      })
+    );
+
+    return [...months].sort().reverse();
+  }, [sales]);
+
+  const formatMonth = (month) => {
+    const [year, monthNumber] = month.split("-");
+
+    return new Date(
+      Number(year),
+      Number(monthNumber) - 1
+    ).toLocaleDateString(undefined, {
+      month: "long",
+      year: "numeric",
+    });
+  };
 
   //--------------------------------------------------
   // Statistics
@@ -143,6 +170,16 @@ function SalesHistory() {
           ).toDateString() ===
           today.toDateString();
 
+      }
+
+      if (dateFilter.startsWith("Month:")) {
+        const selectedMonth = dateFilter.slice(6);
+        const saleDate = new Date(sale.createdAt);
+        const saleMonth = `${saleDate.getFullYear()}-${String(
+          saleDate.getMonth() + 1
+        ).padStart(2, "0")}`;
+
+        matchesDate = saleMonth === selectedMonth;
       }
 
       return (
@@ -272,6 +309,12 @@ function SalesHistory() {
               Today
             </option>
 
+            {availableMonths.map((month) => (
+              <option key={month} value={`Month:${month}`}>
+                {formatMonth(month)}
+              </option>
+            ))}
+
           </select>
 
         </div>
@@ -300,9 +343,7 @@ function SalesHistory() {
 
               <h2 className="text-2xl sm:text-3xl font-bold mt-1 sm:mt-2 truncate">
 
-                $
-
-                {totalRevenue.toFixed(2)}
+                {formatCurrency(totalRevenue)}
 
               </h2>
 
@@ -364,9 +405,7 @@ function SalesHistory() {
 
               <h2 className="text-2xl sm:text-3xl font-bold mt-1 sm:mt-2 truncate">
 
-                $
-
-                {averageSale.toFixed(2)}
+                {formatCurrency(averageSale)}
 
               </h2>
 
@@ -561,11 +600,7 @@ function SalesHistory() {
 
                         <td className="p-3 sm:p-4 lg:p-5 font-semibold text-sm sm:text-base">
 
-                          $
-
-                          {Number(
-                            sale.totalAmount
-                          ).toFixed(2)}
+                          {formatCurrency(sale.totalAmount)}
 
                         </td>
 
@@ -691,7 +726,7 @@ function SalesHistory() {
 
                             Total: <span className="font-semibold text-green-400">
 
-                              ${Number(sale.totalAmount).toFixed(2)}
+                              {formatCurrency(sale.totalAmount)}
 
                             </span>
 

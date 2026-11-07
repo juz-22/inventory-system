@@ -132,3 +132,49 @@ export async function getSalesHistory() {
 
   return response.json();
 }
+
+export async function clearSalesHistory(password, year) {
+  const response = await fetch(`${API_URL}/history`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ password, year }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Failed to clear sales history."
+    );
+  }
+
+  return data;
+}
+
+export async function authenticateAdmin(password) {
+  const response = await fetch(`${API_URL}/admin/authenticate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Invalid administrator password.");
+  }
+  return data;
+}
+
+export async function changeAdminPassword(currentPassword, newPassword) {
+  const response = await fetch(`${API_URL}/admin/password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ currentPassword, newPassword }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to change password.");
+  }
+  return data;
+}

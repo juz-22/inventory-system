@@ -6,10 +6,12 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useCurrency } from "../context/CurrencyContext";
 
 function SalesChart({
   dashboardData,
 }) {
+  const { formatCurrency } = useCurrency();
   const data =
     dashboardData?.salesChart || [];
 
@@ -44,7 +46,7 @@ function SalesChart({
             <YAxis />
             <Tooltip
               formatter={(value) => [
-                `$${value.toFixed(2)}`,
+                formatCurrency(value),
                 "Revenue",
               ]}
             />

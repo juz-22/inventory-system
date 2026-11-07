@@ -22,6 +22,7 @@ export async function apiRequest(
     if (!response.ok) {
       throw new Error(
         data.message ||
+          data.error ||
           "API request failed."
       );
     }

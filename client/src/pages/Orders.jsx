@@ -14,8 +14,10 @@ import {
 } from "react-icons/fa";
 
 import { getProducts } from "../services/api";
+import { useCurrency } from "../context/CurrencyContext";
 
 function Orders() {
+  const { formatCurrency } = useCurrency();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -851,11 +853,7 @@ function Orders() {
                     </p>
 
                     <p className="font-bold text-green-400 text-sm sm:text-base">
-                      $
-                      {(
-                        item.quantity *
-                        item.price
-                      ).toFixed(2)}
+                      {formatCurrency(item.quantity * item.price)}
                     </p>
 
                   </div>
@@ -914,10 +912,7 @@ function Orders() {
                   </p>
 
                   <p className="text-xl sm:text-2xl font-bold mt-1 text-green-400 truncate">
-                    $
-                    {orderStats.estimatedCost.toFixed(
-                      2
-                    )}
+                    {formatCurrency(orderStats.estimatedCost)}
                   </p>
 
                 </div>

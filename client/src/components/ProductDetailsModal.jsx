@@ -9,7 +9,8 @@ import {
   FaCheckCircle,
   FaClock,
 } from "react-icons/fa";
-import { updateProductStock } from "../services/productService";
+import { updateProductStock } from "../services/api";
+import { useCurrency } from "../context/CurrencyContext";
 
 function DetailRow({ icon: Icon, label, value, valueClass = "" }) {
   return (
@@ -26,6 +27,7 @@ function DetailRow({ icon: Icon, label, value, valueClass = "" }) {
 function ProductDetailsModal({ isOpen, setIsOpen, product, onStockUpdated }) {
   const [currentStock, setCurrentStock] = useState(0);
   const [saving, setSaving] = useState(false);
+  const { formatCurrency } = useCurrency();
 
   useEffect(() => {
     if (product) {
@@ -76,9 +78,7 @@ function ProductDetailsModal({ isOpen, setIsOpen, product, onStockUpdated }) {
     try {
       setSaving(true);
 
-      await updateProductStock(product.id, {
-        stock: currentStock,
-      });
+      await updateProductStock(product.id, currentStock);
 
       alert("✅ Stock updated successfully.");
 
@@ -123,7 +123,7 @@ function ProductDetailsModal({ isOpen, setIsOpen, product, onStockUpdated }) {
           <DetailRow
             icon={FaDollarSign}
             label="Unit Price"
-            value={`$${price.toFixed(2)}`}
+            value={formatCurrency(price)}
           />
           <DetailRow
             icon={FaBox}
@@ -133,7 +133,7 @@ function ProductDetailsModal({ isOpen, setIsOpen, product, onStockUpdated }) {
           <DetailRow
             icon={FaDollarSign}
             label="Inventory Value"
-            value={`$${inventoryValue.toFixed(2)}`}
+            value={formatCurrency(inventoryValue)}
             valueClass="text-emerald-400 font-bold"
           />
           

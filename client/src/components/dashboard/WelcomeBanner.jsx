@@ -1,8 +1,12 @@
 import { FaArrowTrendUp } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+import { useCurrency } from "../../context/CurrencyContext";
 
 function WelcomeBanner({
   dashboardData,
 }) {
+  const navigate = useNavigate();
+  const { formatCurrency } = useCurrency();
   const hour = new Date().getHours();
 
   let greeting = "Good Evening";
@@ -21,7 +25,7 @@ function WelcomeBanner({
         <div>
 
           <h2 className="text-3xl font-bold">
-            {greeting}, Adrian 👋
+            {greeting}, Mr. Ajavon!
           </h2>
 
           <p className="mt-3 text-cyan-100 text-lg">
@@ -31,20 +35,44 @@ function WelcomeBanner({
 
           <div className="mt-6 flex flex-wrap gap-3">
 
-            <span className="bg-white/20 px-4 py-2 rounded-xl">
+            <button
+              type="button"
+              onClick={() => navigate("/products")}
+              className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-xl transition focus:outline-none focus:ring-2 focus:ring-white/70"
+            >
               📦 Products: {dashboardData?.totalProducts ?? 0}
-            </span>
+            </button>
 
-            <span className="bg-white/20 px-4 py-2 rounded-xl">
-              💰 Today's Revenue: $
-              {(dashboardData?.todayRevenue ?? 0).toFixed(2)}
-            </span>
+            <button
+              type="button"
+              onClick={() => navigate("/sales-history")}
+              className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-xl transition focus:outline-none focus:ring-2 focus:ring-white/70"
+            >
+              💰 Today's Revenue:{" "}
+              {formatCurrency(dashboardData?.todayRevenue ?? 0)}
+            </button>
 
-            <span className="bg-white/20 px-4 py-2 rounded-xl">
+            <button
+              type="button"
+              onClick={() => navigate("/products?filter=low-stock")}
+              className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-xl transition focus:outline-none focus:ring-2 focus:ring-white/70"
+            >
               ⚠ Low Stock: {dashboardData?.lowStock ?? 0}
-            </span>
+            </button>
 
           </div>
+
+          <button
+            type="button"
+            onClick={() =>
+              document
+                .querySelector("#business-copilot")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+            className="mt-5 inline-flex items-center gap-2 bg-slate-950/40 hover:bg-slate-950/60 px-4 py-2 rounded-xl font-semibold transition focus:outline-none focus:ring-2 focus:ring-white/70"
+          >
+            Open Business Copilot
+          </button>
 
         </div>
 

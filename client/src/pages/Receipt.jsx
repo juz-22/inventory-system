@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useCurrency } from "../context/CurrencyContext";
 
 function Receipt() {
   const { receiptNumber } = useParams();
@@ -7,6 +8,7 @@ function Receipt() {
   const [sale, setSale] = useState(null);
 
   const [loading, setLoading] = useState(true);
+  const { formatCurrency } = useCurrency();
 
   useEffect(() => {
     fetchReceipt();
@@ -71,12 +73,12 @@ function Receipt() {
 
           <p>
             <strong>Unit Price:</strong>{" "}
-            ${sale.unitPrice.toFixed(2)}
+            {formatCurrency(sale.unitPrice)}
           </p>
 
           <p>
             <strong>Total:</strong>{" "}
-            ${sale.totalAmount.toFixed(2)}
+            {formatCurrency(sale.totalAmount)}
           </p>
 
           <p>

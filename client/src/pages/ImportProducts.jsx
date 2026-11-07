@@ -8,8 +8,10 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import { importProducts, getProducts } from "../services/api";
+import { useCurrency } from "../context/CurrencyContext";
 
 function ImportProducts() {
+  const { formatCurrency } = useCurrency();
   // ==========================================
   // Refs
   // ==========================================
@@ -317,7 +319,7 @@ function ImportProducts() {
                         {product.stock}
                       </td>
                       <td className="py-3 text-right text-cyan-400 font-semibold">
-                        ${Number(product.price).toFixed(2)}
+                        {formatCurrency(product.price)}
                       </td>
                     </tr>
                   ))

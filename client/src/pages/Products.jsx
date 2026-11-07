@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import {
   FaTrash,
@@ -22,8 +23,12 @@ import {
   updateProduct,
   receiveStock,
 } from "../services/api";
+import { useCurrency } from "../context/CurrencyContext";
 
 function Products() {
+  const { formatCurrency } = useCurrency();
+  const [searchParams] = useSearchParams();
+  const lowStockOnly = searchParams.get("filter") === "low-stock";
 
   //--------------------------------------------------
   // State
@@ -556,14 +561,18 @@ const handleViewProduct = (
 
       }
 
+      const matchesLowStock =
+        !lowStockOnly || Number(product.stock) <= 10;
+
       return (
         matchesSearch &&
         matchesCategory &&
-        matchesStatus
+        matchesStatus &&
+        matchesLowStock
       );
 
     }
-  ), [products, search, categoryFilter, statusFilter]);
+  ), [products, search, categoryFilter, statusFilter, lowStockOnly]);
 
   //--------------------------------------------------
   // UI
@@ -729,10 +738,7 @@ const handleViewProduct = (
               </p>
 
               <h2 className="text-2xl sm:text-3xl font-bold mt-1 sm:mt-2 truncate">
-                $
-                {inventoryValue.toFixed(
-                  2
-                )}
+                {formatCurrency(inventoryValue)}
               </h2>
 
             </div>
@@ -1006,8 +1012,7 @@ const handleViewProduct = (
 
                       <td className="p-3 sm:p-4 lg:p-5 font-semibold text-sm sm:text-base">
 
-                        $
-                        {product.price.toFixed(2)}
+                        {formatCurrency(product.price)}
 
                       </td>
 

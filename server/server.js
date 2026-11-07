@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
+import "dotenv/config";
 
 import productRoutes from "./routes/productRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
@@ -9,8 +9,6 @@ import salesRoutes from "./routes/salesRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import commandRoutes from "./routes/commandRoutes.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
-
-dotenv.config();
 
 const app = express();
 
