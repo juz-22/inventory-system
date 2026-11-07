@@ -8,7 +8,8 @@
 4. Set `SALES_ADMIN_PASSWORD` in Render.
 5. Deploy the `inventory-system-api` service.
 
-The Render configuration runs Prisma client generation and migrations during the build.
+The Render configuration runs a lockfile-based dependency install, Prisma client generation,
+and migrations during the build. The API requires Node 18.18 or newer.
 The local `server/.env` file is ignored by Git and is not uploaded to Render; environment
 variables must be configured in Render itself. The service root endpoint is used as the
 Render health check.

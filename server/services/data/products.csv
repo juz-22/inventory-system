@@ -1,0 +1,51 @@
+name,category,stock,price
+Small Beer,Beer,0,250
+Medium Beer,Beer,0,400
+Large Beer,Beer,0,500
+Guinness Stout,Beer,0,350
+Heineken,Beer,0,350
+Heineken Can,Beer,0,400
+Tsingtao,Beer,0,400
+Origin Beer,Beer,0,400
+Eazi Beer,Beer,0,200
+Can Stout,Beer,0,250
+Club Beer,Beer,0,400
+Soft Drink Bottle,Soft Drink,0,70
+Malta,Soft Drink,0,300
+Tonic Bottle Soft Drink,Soft Drink,0,100
+Tropic Soft Drink,Soft Drink,0,150
+Minute Maid,Juice,0,150
+Solo Juice,Juice,0,500
+Extra Juice,Juice,0,200
+Aloe Vera,Juice,0,300
+Booster Cola,Soft Drink,0,250
+Small Water Bottle,Water,0,50
+Water Package,Water,0,250
+Cantina Wine,Wine,0,600
+Sangria Wine,Wine,0,600
+Frontera Wine,Wine,0,500
+San Paul Wine,Wine,0,500
+Night Train Wine,Wine,0,10
+Army Bitter,Bitter,0,120
+African Bitter,Bitter,0,120
+Alomo Bitter,Bitter,0,250
+Caribbean Bitter,Bitter,0,120
+Herbal Appetite,Bitter,0,100
+Gin,Spirit,0,100
+Master Gin,Spirit,0,200
+Best London Dry Gin (Small),Spirit,0,250
+Coffee Rum,Spirit,0,100
+Rum,Spirit,0,120
+Best Whisky,Whisky,0,250
+Best Cream,Cream,0,250
+Best Inferno,Spirit,0,300
+Vito,Spirit,0,250
+Catuba,Wine,0,250
+Jojo,Local Drink,0,100
+Open My Sobolo,Local Drink,0,100
+Root,Local Drink,0,100
+Live Your Life,Local Drink,0,100
+Rush,Local Drink,0,100
+Candy Girl,Local Drink,0,100
+Potato Chips Large,Snack,0,250
+Potato Chips Small,Snack,0,150
