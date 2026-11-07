@@ -5,18 +5,38 @@
 const API_URL =
   `${import.meta.env.VITE_API_URL}/sales`;
 
+async function readResponse(response, fallbackMessage) {
+  const body = await response.text();
+  let data;
+
+  if (!body) {
+    throw new Error(
+      `${fallbackMessage} The API returned an empty response.`
+    );
+  }
+
+  try {
+    data = JSON.parse(body);
+  } catch {
+    throw new Error(
+      `${fallbackMessage} The API returned an invalid response.`
+    );
+  }
+
+  if (!response.ok) {
+    throw new Error(data.message || data.error || fallbackMessage);
+  }
+
+  return data;
+}
+
 // =====================================================
 // Get All Sales
 // =====================================================
 
 export async function getSales() {
   const response = await fetch(API_URL);
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch sales.");
-  }
-
-  return response.json();
+  return readResponse(response, "Failed to fetch sales.");
 }
 
 // =====================================================
@@ -159,11 +179,7 @@ export async function authenticateAdmin(password) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ password }),
   });
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || "Invalid administrator password.");
-  }
-  return data;
+  return readResponse(response, "Unable to authenticate administrator.");
 }
 
 export async function changeAdminPassword(currentPassword, newPassword) {
@@ -172,9 +188,5 @@ export async function changeAdminPassword(currentPassword, newPassword) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ currentPassword, newPassword }),
   });
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to change password.");
-  }
-  return data;
+  return readResponse(response, "Failed to change password.");
 }
