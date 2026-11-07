@@ -3,12 +3,15 @@
 ## API on Render
 
 1. Create a new Render Blueprint from this repository.
-2. Set `DATABASE_URL` to the production PostgreSQL connection string.
-3. Set `OPENAI_API_KEY`.
-4. Set `SALES_ADMIN_PASSWORD`.
+2. In the Render service Environment settings, set `DATABASE_URL` to the production PostgreSQL connection string.
+3. Set `OPENAI_API_KEY` in Render.
+4. Set `SALES_ADMIN_PASSWORD` in Render.
 5. Deploy the `inventory-system-api` service.
 
 The Render configuration runs Prisma client generation and migrations during the build.
+The local `server/.env` file is ignored by Git and is not uploaded to Render; environment
+variables must be configured in Render itself. The service root endpoint is used as the
+Render health check.
 
 ## Client on Vercel
 
