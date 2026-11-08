@@ -1,4 +1,25 @@
-# React + Vite
+# InventorySys client
+
+The client is a Vite-powered Progressive Web App. Production builds include an
+installable web manifest and a service worker that caches the application shell
+for offline navigation. The service worker is registered automatically in
+`src/main.jsx`.
+
+## Local development
+
+```bash
+npm run dev
+```
+
+Service workers require a secure context, so installability and offline behavior
+should be tested with `npm run build && npm run preview` or on the deployed
+HTTPS site.
+
+## Build
+
+```bash
+npm run build
+```
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
