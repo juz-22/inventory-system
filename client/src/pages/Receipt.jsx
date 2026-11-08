@@ -22,6 +22,10 @@ function Receipt() {
 
       const data = await response.json();
 
+      if (!response.ok) {
+        throw new Error(data.error || "Receipt not found.");
+      }
+
       setSale(data);
     } catch (error) {
       console.error(error);
@@ -46,6 +50,8 @@ function Receipt() {
     );
   }
 
+  const receiptItems = sale.items || [sale];
+
   return (
     <div className="max-w-2xl mx-auto">
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8">
@@ -61,20 +67,27 @@ function Receipt() {
             {sale.receiptNumber}
           </p>
 
-          <p>
-            <strong>Product:</strong>{" "}
-            {sale.productName}
-          </p>
-
-          <p>
-            <strong>Quantity:</strong>{" "}
-            {sale.quantity}
-          </p>
-
-          <p>
-            <strong>Unit Price:</strong>{" "}
-            {formatCurrency(sale.unitPrice)}
-          </p>
+          <div>
+            <strong>Items:</strong>
+            <div className="mt-3 space-y-3">
+              {receiptItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between gap-4 border-b border-slate-800 pb-3"
+                >
+                  <div>
+                    <p className="font-semibold">{item.productName}</p>
+                    <p className="text-sm text-slate-400">
+                      {item.quantity} x {formatCurrency(item.unitPrice)}
+                    </p>
+                  </div>
+                  <p className="font-semibold">
+                    {formatCurrency(item.totalAmount)}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
 
           <p>
             <strong>Total:</strong>{" "}

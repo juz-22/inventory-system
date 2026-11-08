@@ -39,7 +39,7 @@ model Sale {
   unitPrice     Float
   totalAmount   Float
   paymentMethod String
-  receiptNumber String   @unique
+  receiptNumber String
   createdAt     DateTime @default(now())
 }
 

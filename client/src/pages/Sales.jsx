@@ -351,37 +351,13 @@ function Sales() {
 
       setLoading(true);
 
-      //-----------------------------------------
-      // Process each item in the cart
-      // The backend handles:
-      //   - Saving the sale
-      //   - Deducting stock
-      //   - Activity log
-      //   - Receipt generation
-      //-----------------------------------------
-
-      let latestReceipt = null;
-
-      for (const item of cart) {
-
-        const response =
-          await createSale({
-
-            productName:
-              item.name,
-
-            quantity:
-              item.quantity,
-
-            paymentMethod:
-              saleData.paymentMethod,
-
-          });
-
-        latestReceipt =
-          response.receiptNumber;
-
-      }
+      const response = await createSale({
+        items: cart.map((item) => ({
+          productId: item.id,
+          quantity: item.quantity,
+        })),
+        paymentMethod: saleData.paymentMethod,
+      });
 
       alert(
         `${cart.length} product(s) sold successfully.`
@@ -403,10 +379,10 @@ function Sales() {
 
       await fetchProducts();
 
-      if (latestReceipt) {
+      if (response.receiptNumber) {
 
         navigate(
-          `/receipt/${latestReceipt}`
+          `/receipt/${response.receiptNumber}`
         );
 
       }
