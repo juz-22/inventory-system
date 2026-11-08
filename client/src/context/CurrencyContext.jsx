@@ -3,11 +3,11 @@ import { createContext, useContext, useMemo, useState } from "react";
 const CURRENCY_STORAGE_KEY = "inventory-display-currency";
 
 const currencies = {
-  USD: { label: "US Dollar", rate: 1 },
-  GHS: { label: "Ghanaian Cedi", rate: 15 },
-  LRD: { label: "Liberian Dollar", rate: 193 },
-  EUR: { label: "Euro", rate: 0.92 },
-  GBP: { label: "British Pound", rate: 0.79 },
+  USD: { label: "US Dollar", rate: 1 / 193 },
+  GHS: { label: "Ghanaian Cedi", rate: 15 / 193 },
+  LRD: { label: "Liberian Dollar", rate: 1 },
+  EUR: { label: "Euro", rate: 0.92 / 193 },
+  GBP: { label: "British Pound", rate: 0.79 / 193 },
 };
 
 const CurrencyContext = createContext(null);
@@ -15,7 +15,7 @@ const CurrencyContext = createContext(null);
 export function CurrencyProvider({ children }) {
   const [currency, setCurrency] = useState(() => {
     const savedCurrency = localStorage.getItem(CURRENCY_STORAGE_KEY);
-    return savedCurrency && currencies[savedCurrency] ? savedCurrency : "USD";
+    return savedCurrency && currencies[savedCurrency] ? savedCurrency : "LRD";
   });
 
   const changeCurrency = (nextCurrency) => {

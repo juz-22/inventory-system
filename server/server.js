@@ -16,7 +16,15 @@ const app = express();
 // Middleware
 // ==========================================
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://inventory-system-44-tech1.vercel.app",
+      "http://localhost:5173",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // ==========================================
