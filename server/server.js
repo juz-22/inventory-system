@@ -9,6 +9,7 @@ import salesRoutes from "./routes/salesRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import commandRoutes from "./routes/commandRoutes.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
+import importRoutes from "./routes/importRoutes.js";
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.get("/", (req, res) => {
 
 // Products
 app.use("/api/products", productRoutes);
+app.use("/api/import", importRoutes);
 
 // AI
 app.use("/api/ai", aiRoutes);

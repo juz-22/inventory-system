@@ -90,7 +90,7 @@ export async function importProducts(
   formData
 ) {
   return await post(
-    "/products/import",
+    "/import/products",
     formData,
     true
   );
