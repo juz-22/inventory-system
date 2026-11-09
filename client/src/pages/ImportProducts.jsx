@@ -7,6 +7,7 @@ import {
   FaDatabase,
   FaSearch,
 } from "react-icons/fa";
+import Papa from "papaparse";
 import { importProducts, getProducts } from "../services/api";
 import { useCurrency } from "../context/CurrencyContext";
 
@@ -25,6 +26,7 @@ function ImportProducts() {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [message, setMessage] = useState("");
+  const [uploadedCount, setUploadedCount] = useState(null);
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -68,9 +70,11 @@ function ImportProducts() {
     if (!file) return false;
     if (!file.name.toLowerCase().endsWith(".csv")) {
       setMessage("Only CSV files are supported.");
+      setUploadedCount(null);
       return false;
     }
     setMessage("");
+    setUploadedCount(null);
     return true;
   };
 
@@ -130,11 +134,54 @@ function ImportProducts() {
 
     try {
       setLoading(true);
-      const formData = new FormData();
-      formData.append("file", selectedFile);
+      const { data: rows, errors } = Papa.parse(selectedFile, {
+        header: true,
+        skipEmptyLines: "greedy",
+        transformHeader: (header) => header.trim().toLowerCase(),
+      });
 
-      const response = await importProducts(formData);
-      setMessage(response.message || "Products imported successfully.");
+      if (errors.length > 0) {
+        throw new Error(
+          `Could not parse CSV row ${errors[0].row + 1}: ${errors[0].message}`
+        );
+      }
+
+      if (!rows.length) {
+        throw new Error("The CSV file does not contain any product rows.");
+      }
+
+      const products = rows.map((row, index) => {
+        const name = String(row.name ?? "").trim();
+        const category = String(row.category ?? "").trim();
+        const stockValue = row.stock ?? row.quantity;
+        const stock = Number(stockValue);
+        const price = Number(row.price);
+
+        if (
+          !name ||
+          !category ||
+          stockValue === undefined ||
+          stockValue === "" ||
+          !Number.isInteger(stock) ||
+          stock < 0 ||
+          row.price === undefined ||
+          row.price === "" ||
+          !Number.isFinite(price) ||
+          price < 0
+        ) {
+          throw new Error(
+            `Invalid data on CSV row ${index + 2}. Provide name, category, a non-negative whole-number stock (or quantity), and a non-negative price.`
+          );
+        }
+
+        return { name, category, stock, price };
+      });
+
+      const response = await importProducts(products);
+      setUploadedCount(response.count);
+      setMessage(
+        `Upload complete. ${response.count} product${response.count === 1 ? "" : "s"} added; existing product names were skipped.`
+      );
       setSelectedFile(null);
 
       if (fileInputRef.current) {
@@ -194,6 +241,7 @@ function ImportProducts() {
               ref={fileInputRef}
               type="file"
               accept=".csv"
+              disabled={loading}
               onChange={handleBrowse}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             />
@@ -247,6 +295,11 @@ function ImportProducts() {
           {message && (
             <div className="mt-5 rounded-xl border border-slate-700 bg-slate-800 p-4">
               <p className="text-slate-300">{message}</p>
+              {uploadedCount !== null && (
+                <p className="mt-1 text-sm text-cyan-300">
+                  Inserted: {uploadedCount}
+                </p>
+              )}
             </div>
           )}
 
@@ -258,8 +311,14 @@ function ImportProducts() {
             disabled={!selectedFile || loading}
             className="mt-6 w-full bg-cyan-500 hover:bg-cyan-400 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed text-black font-semibold py-3 rounded-xl transition"
           >
-            {loading ? "Importing Products..." : "Import Products"}
+            <span className="inline-flex items-center justify-center gap-2">
+              {loading && <FaSyncAlt className="animate-spin" aria-hidden="true" />}
+              {loading ? "Importing Products..." : "Import Products"}
+            </span>
           </button>
+          <p className="text-xs text-slate-500">
+            CSV columns: name, category, stock (or quantity), and price.
+          </p>
         </div>
 
         {/* ==========================================

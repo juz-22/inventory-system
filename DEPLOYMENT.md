@@ -26,3 +26,23 @@ Railway itself.
 5. Deploy.
 
 The `client/vercel.json` rewrite keeps React Router routes working on refresh.
+
+## Inventory CSV upload
+
+The Import Products page parses CSV files in the browser and sends the rows as JSON to
+`POST /api/inventory/upload`. The CSV must contain `name`, `category`, `price`, and
+either `stock` or `quantity` columns. `quantity` is mapped to the database's `stock`
+field. Product names are unique in the current Prisma schema, so duplicate names are
+skipped; the response `count` is the number of newly inserted products.
+
+Configure these production variables:
+
+| Platform | Variable | Value |
+| --- | --- | --- |
+| Vercel (client project) | `VITE_API_URL` | Railway API base URL ending in `/api` |
+| Railway (API service) | `DATABASE_URL` | Railway PostgreSQL connection string |
+| Railway (API service) | `CLIENT_ORIGINS` | Comma-separated exact origins for custom frontend domains, e.g. `https://inventory.example.com,https://admin.example.com` |
+
+HTTPS `*.vercel.app` origins are allowed automatically by the API. `CLIENT_ORIGINS`
+is for custom domains and should contain origins only (scheme and hostname, no path).
+For local development, the API allows the Vite origins on port `5173`.

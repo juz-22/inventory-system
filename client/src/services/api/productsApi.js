@@ -87,11 +87,10 @@ export async function deleteProduct(
 // =============================================
 
 export async function importProducts(
-  formData
+  products
 ) {
   return await post(
-    "/import/products",
-    formData,
-    true
+    "/inventory/upload",
+    products
   );
 }
