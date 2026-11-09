@@ -134,10 +134,14 @@ function ImportProducts() {
 
     try {
       setLoading(true);
-      const { data: rows, errors } = Papa.parse(selectedFile, {
-        header: true,
-        skipEmptyLines: "greedy",
-        transformHeader: (header) => header.trim().toLowerCase(),
+      const { data: rows, errors } = await new Promise((resolve, reject) => {
+        Papa.parse(selectedFile, {
+          header: true,
+          skipEmptyLines: "greedy",
+          transformHeader: (header) => header.trim().toLowerCase(),
+          complete: resolve,
+          error: reject,
+        });
       });
 
       if (errors.length > 0) {
